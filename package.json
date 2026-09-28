@@ -1,0 +1,8 @@
+{
+  "name": "docker-chrome-novnc-mcp",
+  "version": "1.0.0",
+  "description": "Google Chrome Docker container with noVNC, Openbox, persistent profiles, and CDP bridge for Playwright MCP",
+  "dependencies": {
+    "@playwright/mcp": "^0.0.82"
+  }
+}
