@@ -1,7 +1,7 @@
 {
-  "name": "docker-chrome-novnc-mcp",
+  "name": "omnichrome",
   "version": "1.0.0",
-  "description": "Google Chrome Docker container with noVNC, Openbox, persistent profiles, and CDP bridge for Playwright MCP",
+  "description": "OmniChrome: The all-in-one Google Chrome container with noVNC Web GUI, persistent storage, and CDP bridge for Playwright MCP & AI agents",
   "dependencies": {
     "@playwright/mcp": "^0.0.82"
   }

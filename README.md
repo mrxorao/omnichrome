@@ -1,6 +1,6 @@
-# docker-chrome-novnc-mcp
+# OmniChrome 🌐
 
-A lightweight, robust, and fully persistent Google Chrome Docker environment featuring **real-time interactive GUI via noVNC**, **Openbox window management**, **remote debugging via Chrome DevTools Protocol (CDP)**, and seamless **Playwright MCP / AI automation** support.
+> **The All-in-One Google Chrome Docker Container** featuring **real-time interactive GUI via noVNC**, **Openbox window management**, **remote debugging via Chrome DevTools Protocol (CDP)**, and seamless **Playwright MCP / AI automation** support.
 
 ---
 
@@ -32,15 +32,15 @@ A lightweight, robust, and fully persistent Google Chrome Docker environment fea
 
 ## 📥 How to Install & Run
 
-### Option 1: Single-File Setup with `docker-compose.yml` (Easiest - No Dockerfile Needed)
+### Option 1: Single-File Setup with `docker-compose.yml` (Recommended)
 
-Create a `docker-compose.yml` file on your server or PC with the following content:
+Create a `docker-compose.yml` file anywhere on your machine or VPS:
 
 ```yaml
 services:
-  chrome:
-    image: xorao/docker-chrome-novnc-mcp:latest
-    container_name: chrome-default
+  omnichrome:
+    image: xorao/omnichrome:latest
+    container_name: omnichrome
     restart: unless-stopped
     ports:
       - "6080:6080" # noVNC Web UI (http://localhost:6080)
@@ -53,13 +53,13 @@ services:
       - TZ=UTC
       - AUTO_UPDATE=true
       - PROXY_SERVER= # Optional: http://user:pass@ip:port
-      - VNC_PASSWORD= # Optional: Set a password for public VPS
+      - VNC_PASSWORD= # Optional: Set password for public VPS
     volumes:
       - ./data/default:/data/profile
     shm_size: "2gb"
 ```
 
-Then simply start it with:
+Then start it with:
 ```bash
 docker compose up -d
 ```
@@ -73,7 +73,7 @@ Run everything directly in a single command line without creating any files:
 
 ```bash
 docker run -d \
-  --name chrome-default \
+  --name omnichrome \
   --restart unless-stopped \
   -p 6080:6080 \
   -p 5900:5900 \
@@ -82,18 +82,18 @@ docker run -d \
   -e TZ=UTC \
   -e AUTO_UPDATE=true \
   -v $(pwd)/data/default:/data/profile \
-  xorao/docker-chrome-novnc-mcp:latest
+  xorao/omnichrome:latest
 ```
 
 ---
 
 ### Option 3: Clone Repository & Build Locally
 
-If you want to modify the source code or `Dockerfile`:
+If you want to modify the source code or Dockerfile:
 
 ```bash
-git clone https://github.com/mrxorao/docker-chrome-novnc-mcp.git
-cd docker-chrome-novnc-mcp
+git clone https://github.com/mrxorao/omnichrome.git
+cd omnichrome
 docker compose up -d --build
 ```
 
@@ -111,7 +111,7 @@ docker compose restart
 # View live logs
 docker compose logs -f
 
-# Pull and update to the latest image
+# Pull and update to the latest version
 docker compose pull && docker compose up -d
 ```
 
@@ -119,12 +119,12 @@ docker compose pull && docker compose up -d
 
 ## 🤖 Playwright MCP Integration
 
-To connect Antigravity, Claude Desktop, Cursor, or any MCP client to this Chrome container, configure your `mcp_config.json`:
+To connect Antigravity, Claude Desktop, Cursor, or any MCP client to OmniChrome, configure your `mcp_config.json`:
 
 ```json
 {
   "mcpServers": {
-    "browser": {
+    "omnichrome": {
       "command": "node",
       "args": [
         "./node_modules/@playwright/mcp/cli.js",

@@ -1,20 +1,20 @@
 services:
-  chrome:
-    image: xorao/docker-chrome-novnc-mcp:latest
-    container_name: chrome-default
+  omnichrome:
+    image: xorao/omnichrome:latest
+    container_name: omnichrome
     restart: unless-stopped
     ports:
-      - "6080:6080" # noVNC Web UI (http://localhost:6080/vnc.html)
+      - "6080:6080" # noVNC Web UI (http://localhost:6080)
       - "5900:5900" # Direct VNC (localhost:5900)
-      - "9222:9222" # Chrome DevTools Protocol / CDP (http://localhost:9222)
+      - "9222:9222" # CDP Remote Debugging (http://localhost:9222)
     environment:
       - DISPLAY=:99
       - RESOLUTION_WIDTH=1366
       - RESOLUTION_HEIGHT=768
       - TZ=UTC
-      - AUTO_UPDATE=true # Automatically update Chrome on container boot
-      - PROXY_SERVER= # Optional: http://user:password@ip:port or socks5://ip:port
-      - VNC_PASSWORD= # Optional: Leave empty for no password or set 'yourpassword'
+      - AUTO_UPDATE=true
+      - PROXY_SERVER= # Optional: http://user:pass@ip:port or socks5://ip:port
+      - VNC_PASSWORD= # Optional: Set password for public VPS
     volumes:
       - ./data/default:/data/profile
     shm_size: "2gb"
