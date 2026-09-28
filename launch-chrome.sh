@@ -17,6 +17,7 @@ fi
 
 exec google-chrome-stable \
     --no-sandbox \
+    --test-type \
     --disable-dev-shm-usage \
     --remote-debugging-port=9223 \
     --remote-allow-origins=* \
