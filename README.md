@@ -14,7 +14,7 @@ A lightweight, robust, and fully persistent Google Chrome Docker environment fea
 * **Auto-Update with Safe Fallback:** Optional automatic Chrome upgrade on container startup without breaking on network outages.
 * **Dynamic Proxy Support:** Built-in HTTP and SOCKS proxy support via environment variables.
 * **Optional VNC Authentication:** Secure your VNC/noVNC session with a password when deploying to VPS/Cloud.
-* **Full Multilingual & Emoji Font Support:** Includes `fonts-noto-color-emoji`, `fonts-noto-cjk`, and configurable timezones (`TZ`).
+* **Full Multilingual & Emoji Font Support:** Includes `fonts-noto-color-emoji`, `fonts-noto-cjk`, and configurable timezones (`TZ=UTC`).
 
 ---
 
@@ -30,30 +30,78 @@ A lightweight, robust, and fully persistent Google Chrome Docker environment fea
 
 ---
 
-## 🛠️ Getting Started
+## 📥 How to Install & Run
 
-### 1. Pull the Image directly from Docker Hub (Optional)
+### Prerequisites
+* [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed on your machine.
+* [Node.js](https://nodejs.org/) *(Optional, only if running local Playwright scripts or Playwright MCP)*.
+
+---
+
+### Option 1: Quick Start with Docker Compose (Recommended)
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mrxorao/docker-chrome-novnc-mcp.git
+   cd docker-chrome-novnc-mcp
+   ```
+
+2. **Start the container:**
+   ```bash
+   docker compose up -d
+   ```
+   *(Docker Compose will automatically pull the pre-built image from Docker Hub and start in seconds).*
+
+3. **Open the browser:**
+   * Navigate to: [http://localhost:6080](http://localhost:6080)
+
+---
+
+### Option 2: Standalone `docker run` (Zero Clone Needed)
+
+You can run the container directly without cloning the repository:
+
 ```bash
-docker pull xorao/docker-chrome-novnc-mcp:latest
+docker run -d \
+  --name chrome-default \
+  --restart unless-stopped \
+  -p 6080:6080 \
+  -p 5900:5900 \
+  -p 9222:9222 \
+  --shm-size=2gb \
+  -e TZ=UTC \
+  -e AUTO_UPDATE=true \
+  -v $(pwd)/data/default:/data/profile \
+  xorao/docker-chrome-novnc-mcp:latest
 ```
 
-### 2. Start the Container
+---
+
+### Option 3: Build Locally from Source
+
+If you want to customize the Dockerfile and build locally:
+
 ```bash
-docker compose up -d
+git clone https://github.com/mrxorao/docker-chrome-novnc-mcp.git
+cd docker-chrome-novnc-mcp
+docker compose up -d --build
 ```
 
-### 3. Stop the Container
+---
+
+## 🛠️ Management Commands
+
 ```bash
+# Stop the container
 docker compose down
-```
 
-### 4. Restart the Container
-```bash
+# Restart the container
 docker compose restart
-```
 
-### 5. Force Rebuild (Fresh Chrome installation)
-```bash
+# View live container logs
+docker compose logs -f
+
+# Force re-download / rebuild latest version
 docker compose build --no-cache
 docker compose up -d
 ```
@@ -106,9 +154,21 @@ To connect Antigravity or any MCP client to this Chrome container, configure you
 }
 ```
 
+Or run an automated Playwright test:
+```bash
+npm install
+node examples/playwright_example.js
+```
+
 ---
 
 ## 📁 Persistent Storage Architecture
 
 * **Profile Data:** Stored in `./data/default`. All logins, cookies, history, and installed extensions persist across container rebuilds.
 * **Downloads:** All files downloaded inside Chrome automatically map to `./data/default/Downloads` on your host system.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
