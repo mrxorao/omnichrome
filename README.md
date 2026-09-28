@@ -32,34 +32,44 @@ A lightweight, robust, and fully persistent Google Chrome Docker environment fea
 
 ## 📥 How to Install & Run
 
-### Prerequisites
-* [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed on your machine.
-* [Node.js](https://nodejs.org/) *(Optional, only if running local Playwright scripts or Playwright MCP)*.
+### Option 1: Single-File Setup with `docker-compose.yml` (Easiest - No Dockerfile Needed)
+
+Create a `docker-compose.yml` file on your server or PC with the following content:
+
+```yaml
+services:
+  chrome:
+    image: xorao/docker-chrome-novnc-mcp:latest
+    container_name: chrome-default
+    restart: unless-stopped
+    ports:
+      - "6080:6080" # noVNC Web UI (http://localhost:6080)
+      - "5900:5900" # Direct VNC (localhost:5900)
+      - "9222:9222" # CDP Remote Debugging (http://localhost:9222)
+    environment:
+      - DISPLAY=:99
+      - RESOLUTION_WIDTH=1366
+      - RESOLUTION_HEIGHT=768
+      - TZ=UTC
+      - AUTO_UPDATE=true
+      - PROXY_SERVER= # Optional: http://user:pass@ip:port
+      - VNC_PASSWORD= # Optional: Set a password for public VPS
+    volumes:
+      - ./data/default:/data/profile
+    shm_size: "2gb"
+```
+
+Then simply start it with:
+```bash
+docker compose up -d
+```
+*(Docker will pull the pre-built image from Docker Hub and start immediately).*
 
 ---
 
-### Option 1: Quick Start with Docker Compose (Recommended)
+### Option 2: Standalone `docker run` (Zero Files Needed)
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/mrxorao/docker-chrome-novnc-mcp.git
-   cd docker-chrome-novnc-mcp
-   ```
-
-2. **Start the container:**
-   ```bash
-   docker compose up -d
-   ```
-   *(Docker Compose will automatically pull the pre-built image from Docker Hub and start in seconds).*
-
-3. **Open the browser:**
-   * Navigate to: [http://localhost:6080](http://localhost:6080)
-
----
-
-### Option 2: Standalone `docker run` (Zero Clone Needed)
-
-You can run the container directly without cloning the repository:
+Run everything directly in a single command line without creating any files:
 
 ```bash
 docker run -d \
@@ -77,9 +87,9 @@ docker run -d \
 
 ---
 
-### Option 3: Build Locally from Source
+### Option 3: Clone Repository & Build Locally
 
-If you want to customize the Dockerfile and build locally:
+If you want to modify the source code or `Dockerfile`:
 
 ```bash
 git clone https://github.com/mrxorao/docker-chrome-novnc-mcp.git
@@ -98,46 +108,18 @@ docker compose down
 # Restart the container
 docker compose restart
 
-# View live container logs
+# View live logs
 docker compose logs -f
 
-# Force re-download / rebuild latest version
-docker compose build --no-cache
-docker compose up -d
-```
-
----
-
-## ⚙️ Configuration & Environment Variables
-
-Edit `docker-compose.yml` to customize your environment:
-
-```yaml
-services:
-  chrome:
-    environment:
-      # Display & Resolution
-      - RESOLUTION_WIDTH=1366
-      - RESOLUTION_HEIGHT=768
-      - TZ=UTC
-
-      # Automatic Chrome Updates
-      - AUTO_UPDATE=true
-
-      # Proxy Configuration (Optional)
-      # Supports: http://user:pass@host:port or socks5://host:port
-      - PROXY_SERVER=
-
-      # VNC Password Protection (Optional)
-      # Leave blank for open local access, or set a password for public VPS
-      - VNC_PASSWORD=
+# Pull and update to the latest image
+docker compose pull && docker compose up -d
 ```
 
 ---
 
 ## 🤖 Playwright MCP Integration
 
-To connect Antigravity or any MCP client to this Chrome container, configure your `mcp_config.json`:
+To connect Antigravity, Claude Desktop, Cursor, or any MCP client to this Chrome container, configure your `mcp_config.json`:
 
 ```json
 {
@@ -154,7 +136,7 @@ To connect Antigravity or any MCP client to this Chrome container, configure you
 }
 ```
 
-Or run an automated Playwright test:
+Or test with Playwright directly:
 ```bash
 npm install
 node examples/playwright_example.js
@@ -164,7 +146,7 @@ node examples/playwright_example.js
 
 ## 📁 Persistent Storage Architecture
 
-* **Profile Data:** Stored in `./data/default`. All logins, cookies, history, and installed extensions persist across container rebuilds.
+* **Profile Data:** Stored in `./data/default`. All logins, cookies, history, and installed extensions persist across container updates.
 * **Downloads:** All files downloaded inside Chrome automatically map to `./data/default/Downloads` on your host system.
 
 ---

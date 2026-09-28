@@ -1,6 +1,5 @@
 services:
   chrome:
-    build: .
     image: xorao/docker-chrome-novnc-mcp:latest
     container_name: chrome-default
     restart: unless-stopped
