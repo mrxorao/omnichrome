@@ -32,22 +32,27 @@ A lightweight, robust, and fully persistent Google Chrome Docker environment fea
 
 ## 🛠️ Getting Started
 
-### 1. Start the Container
+### 1. Pull the Image directly from Docker Hub (Optional)
 ```bash
-docker compose up -d --build
+docker pull xorao/docker-chrome-novnc-mcp:latest
 ```
 
-### 2. Stop the Container
+### 2. Start the Container
+```bash
+docker compose up -d
+```
+
+### 3. Stop the Container
 ```bash
 docker compose down
 ```
 
-### 3. Restart the Container
+### 4. Restart the Container
 ```bash
 docker compose restart
 ```
 
-### 4. Force Rebuild (Fresh Chrome installation)
+### 5. Force Rebuild (Fresh Chrome installation)
 ```bash
 docker compose build --no-cache
 docker compose up -d
