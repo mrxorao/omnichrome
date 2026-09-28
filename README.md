@@ -97,6 +97,26 @@ cd omnichrome
 docker compose up -d --build
 ```
 
+## ⚙️ Configuration & Environment Variables (.env)
+
+You can customize OmniChrome using environment variables or a `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `RESOLUTION_WIDTH` | `1366` | Virtual display width in pixels |
+| `RESOLUTION_HEIGHT` | `768` | Virtual display height in pixels |
+| `TZ` | `UTC` | Timezone (e.g., `UTC`, `Europe/Lisbon`, `America/New_York`) |
+| `AUTO_UPDATE` | `true` | Automatically update Google Chrome on startup |
+| `PROXY_SERVER` | *(empty)* | HTTP or SOCKS proxy (`http://user:pass@ip:port` or `socks5://ip:port`) |
+| `VNC_PASSWORD` | *(empty)* | Optional password to protect the noVNC/VNC interface |
+| `PORT_NOVNC` | `6080` | Host port for noVNC web interface |
+| `PORT_VNC` | `5900` | Host port for direct VNC connection |
+| `PORT_CDP` | `9222` | Host port for Chrome DevTools Protocol (CDP) |
+
 ---
 
 ## 🛠️ Management Commands

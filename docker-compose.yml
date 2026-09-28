@@ -4,17 +4,17 @@ services:
     container_name: omnichrome
     restart: unless-stopped
     ports:
-      - "6080:6080" # noVNC Web UI (http://localhost:6080)
-      - "5900:5900" # Direct VNC (localhost:5900)
-      - "9222:9222" # CDP Remote Debugging (http://localhost:9222)
+      - "${PORT_NOVNC:-6080}:6080" # noVNC Web UI (http://localhost:6080)
+      - "${PORT_VNC:-5900}:5900"   # Direct VNC (localhost:5900)
+      - "${PORT_CDP:-9222}:9222"   # CDP Remote Debugging (http://localhost:9222)
     environment:
       - DISPLAY=:99
-      - RESOLUTION_WIDTH=1366
-      - RESOLUTION_HEIGHT=768
-      - TZ=UTC
-      - AUTO_UPDATE=true
-      - PROXY_SERVER= # Optional: http://user:pass@ip:port or socks5://ip:port
-      - VNC_PASSWORD= # Optional: Set password for public VPS
+      - RESOLUTION_WIDTH=${RESOLUTION_WIDTH:-1366}
+      - RESOLUTION_HEIGHT=${RESOLUTION_HEIGHT:-768}
+      - TZ=${TZ:-UTC}
+      - AUTO_UPDATE=${AUTO_UPDATE:-true}
+      - PROXY_SERVER=${PROXY_SERVER:-}
+      - VNC_PASSWORD=${VNC_PASSWORD:-}
     volumes:
       - ./data/default:/data/profile
     shm_size: "2gb"
