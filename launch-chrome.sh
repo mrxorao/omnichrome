@@ -31,4 +31,4 @@ exec google-chrome-stable \
     --disable-features=TranslateUI \
     --disable-sync \
     $EXTRA_ARGS \
-    https://www.google.com
+    https://duckduckgo.com
