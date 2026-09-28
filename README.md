@@ -51,6 +51,8 @@ services:
       - RESOLUTION_WIDTH=1366
       - RESOLUTION_HEIGHT=768
       - TZ=UTC
+      - SEARCH_ENGINE=google # google, duckduckgo, or bing
+      - HOMEPAGE_URL= # Optional: Custom homepage URL
       - AUTO_UPDATE=true
       - PROXY_SERVER= # Optional: http://user:pass@ip:port
       - VNC_PASSWORD= # Optional: Set password for public VPS
@@ -110,6 +112,8 @@ cp .env.example .env
 | `RESOLUTION_WIDTH` | `1366` | Virtual display width in pixels |
 | `RESOLUTION_HEIGHT` | `768` | Virtual display height in pixels |
 | `TZ` | `UTC` | Timezone (e.g., `UTC`, `Europe/Lisbon`, `America/New_York`) |
+| `SEARCH_ENGINE` | `google` | Default search engine & homepage (`google`, `duckduckgo`, or `bing`) |
+| `HOMEPAGE_URL` | *(empty)* | Optional custom homepage URL (overrides search engine homepage) |
 | `AUTO_UPDATE` | `true` | Automatically update Google Chrome on startup |
 | `PROXY_SERVER` | *(empty)* | HTTP or SOCKS proxy (`http://user:pass@ip:port` or `socks5://ip:port`) |
 | `VNC_PASSWORD` | *(empty)* | Optional password to protect the noVNC/VNC interface |

@@ -15,6 +15,22 @@ elif [ -n "$HTTP_PROXY" ]; then
     EXTRA_ARGS="$EXTRA_ARGS --proxy-server=$HTTP_PROXY --proxy-bypass-list=localhost,127.0.0.1,*.local"
 fi
 
+# Determine default startup URL
+ENGINE_CHOICE=$(echo "${SEARCH_ENGINE:-google}" | tr '[:upper:]' '[:lower:]')
+case "$ENGINE_CHOICE" in
+    duckduckgo|ddg)
+        DEFAULT_URL="https://duckduckgo.com"
+        ;;
+    bing)
+        DEFAULT_URL="https://www.bing.com"
+        ;;
+    *)
+        DEFAULT_URL="https://www.google.com"
+        ;;
+esac
+
+TARGET_URL="${HOMEPAGE_URL:-$DEFAULT_URL}"
+
 exec google-chrome-stable \
     --no-sandbox \
     --test-type \
@@ -31,4 +47,4 @@ exec google-chrome-stable \
     --disable-features=TranslateUI \
     --disable-sync \
     $EXTRA_ARGS \
-    https://duckduckgo.com
+    "$TARGET_URL"

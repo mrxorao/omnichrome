@@ -4,7 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DISPLAY=:99 \
     RESOLUTION_WIDTH=1366 \
     RESOLUTION_HEIGHT=768 \
-    TZ=UTC
+    TZ=UTC \
+    SEARCH_ENGINE=google
 
 # Install system dependencies, Xvfb, Openbox, x11vnc, noVNC, websockify, fonts (including emojis & CJK), and utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -35,11 +36,8 @@ RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor
     && apt-get update && apt-get install -y --no-install-recommends google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
-# Create profile, download, supervisor, and Chrome policies directories
+# Create profile, download, and supervisor directories
 RUN mkdir -p /data/profile /data/profile/Downloads /var/log/supervisor /etc/supervisor/conf.d /etc/opt/chrome/policies/managed
-
-# Copy Chrome managed policies (DuckDuckGo default search engine & homepage)
-COPY policies.json /etc/opt/chrome/policies/managed/policies.json
 
 # Copy configuration scripts and entrypoints
 COPY supervisord.conf /etc/supervisor/supervisord.conf

@@ -12,6 +12,8 @@ services:
       - RESOLUTION_WIDTH=${RESOLUTION_WIDTH:-1366}
       - RESOLUTION_HEIGHT=${RESOLUTION_HEIGHT:-768}
       - TZ=${TZ:-UTC}
+      - SEARCH_ENGINE=${SEARCH_ENGINE:-google} # google, duckduckgo, bing
+      - HOMEPAGE_URL=${HOMEPAGE_URL:-} # Optional custom homepage
       - AUTO_UPDATE=${AUTO_UPDATE:-true}
       - PROXY_SERVER=${PROXY_SERVER:-}
       - VNC_PASSWORD=${VNC_PASSWORD:-}
