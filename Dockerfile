@@ -7,10 +7,11 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
     SEARCH_ENGINE=google
 
-# Install system dependencies, Xvfb, Openbox, x11vnc, noVNC, websockify, fonts (including emojis & CJK), and utilities
+# Install system dependencies, Xvfb, Openbox, xdotool, x11vnc, noVNC, websockify, fonts, and utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     xvfb \
     openbox \
+    xdotool \
     x11vnc \
     novnc \
     websockify \
@@ -36,15 +37,20 @@ RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor
     && apt-get update && apt-get install -y --no-install-recommends google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
-# Create profile, download, and supervisor directories
-RUN mkdir -p /data/profile /data/profile/Downloads /var/log/supervisor /etc/supervisor/conf.d /etc/opt/chrome/policies/managed
+# Create profile, download, supervisor, and Openbox configuration directories
+RUN mkdir -p /data/profile /data/profile/Downloads /var/log/supervisor /etc/supervisor/conf.d /etc/opt/chrome/policies/managed /etc/xdg/openbox /root/.config/openbox
+
+# Copy Openbox window manager configuration (removes minimize button, auto-restores on background click)
+COPY openbox-rc.xml /etc/xdg/openbox/rc.xml
+COPY openbox-rc.xml /root/.config/openbox/rc.xml
 
 # Copy configuration scripts and entrypoints
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY entrypoint.sh /entrypoint.sh
 COPY launch-chrome.sh /launch-chrome.sh
 COPY launch-x11vnc.sh /launch-x11vnc.sh
-RUN chmod +x /entrypoint.sh /launch-chrome.sh /launch-x11vnc.sh
+COPY keep-maximized.sh /keep-maximized.sh
+RUN chmod +x /entrypoint.sh /launch-chrome.sh /launch-x11vnc.sh /keep-maximized.sh
 
 # Symlink to access noVNC directly via root path or vnc.html
 RUN ln -s /usr/share/novnc/vnc.html /usr/share/novnc/index.html
