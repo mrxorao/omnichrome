@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-# Auto-restore and keep Chrome maximized
+# Auto-restore Chrome ONLY when no window is active
 
 export DISPLAY=:99
 
 while true; do
-    # Search for Chrome windows and activate/unminimize them if they exist
     if command -v xdotool >/dev/null 2>&1; then
-        WIDS=$(xdotool search --class "google-chrome" 2>/dev/null || true)
-        for wid in $WIDS; do
-            xdotool windowactivate "$wid" 2>/dev/null || true
-        done
+        ACTIVE_WID=$(xdotool getactivewindow 2>/dev/null || true)
+        if [ -z "$ACTIVE_WID" ]; then
+            WID=$(xdotool search --class "google-chrome" 2>/dev/null | head -n 1 || true)
+            if [ -n "$WID" ]; then
+                xdotool windowactivate "$WID" 2>/dev/null || true
+            fi
+        fi
     fi
-    sleep 2
+    sleep 5
 done

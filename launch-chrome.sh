@@ -35,16 +35,23 @@ exec google-chrome-stable \
     --no-sandbox \
     --test-type \
     --disable-dev-shm-usage \
+    --disable-gpu \
+    --disable-software-rasterizer \
+    --renderer-process-limit=3 \
+    --js-flags="--max-old-space-size=512" \
+    --aggressive-cache-discard \
+    --disk-cache-size=104857600 \
+    --enable-features=MemorySaverMode,AutomaticTabDiscarding \
+    --disable-features=TranslateUI,BackForwardCache \
+    --disable-background-networking \
+    --disable-sync \
+    --no-first-run \
+    --no-default-browser-check \
     --remote-debugging-port=9223 \
     --remote-allow-origins=* \
     --user-data-dir=/data/profile \
     --window-size="${RESOLUTION_WIDTH:-1366},${RESOLUTION_HEIGHT:-768}" \
     --window-position=0,0 \
     --start-maximized \
-    --no-first-run \
-    --no-default-browser-check \
-    --disable-background-networking \
-    --disable-features=TranslateUI \
-    --disable-sync \
     $EXTRA_ARGS \
     "$TARGET_URL"
